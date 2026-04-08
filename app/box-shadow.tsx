@@ -4,8 +4,8 @@ import { Stack } from "expo-router";
 const shadows = [
   {
     label: "Basic",
-    shadow: "0 2px 8px rgba(0, 0, 0, 0.6)",
-    accent: "#fff",
+    shadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+    accent: "#888",
   },
   {
     label: "Colored — Purple",
@@ -52,18 +52,18 @@ export default function BoxShadowScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 24, gap: 24 },
-  heading: { fontSize: 28, fontWeight: "700", color: "#fff" },
+  heading: { fontSize: 28, fontWeight: "700", color: "#111" },
   code: {
     fontSize: 13,
     color: "#4facfe",
     fontFamily: "monospace",
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "#f2f2f2",
     padding: 10,
     borderRadius: 8,
   },
   list: { gap: 28 },
   card: {
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "#fff",
     borderRadius: 18,
     padding: 20,
     flexDirection: "row",
@@ -76,6 +76,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
   },
   cardText: { flex: 1, gap: 4 },
-  cardTitle: { fontSize: 15, fontWeight: "600", color: "#fff" },
-  cardCode: { fontSize: 11, color: "#555", fontFamily: "monospace" },
+  cardTitle: { fontSize: 15, fontWeight: "600", color: "#111" },
+  cardCode: { fontSize: 11, color: "#888", fontFamily: "monospace" },
 });

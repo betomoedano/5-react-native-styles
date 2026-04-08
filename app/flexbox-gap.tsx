@@ -51,18 +51,18 @@ export default function FlexboxGapScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 24, gap: 32 },
-  heading: { fontSize: 28, fontWeight: "700", color: "#fff" },
+  heading: { fontSize: 28, fontWeight: "700", color: "#111" },
   code: {
     fontSize: 13,
     color: "#43e97b",
     fontFamily: "monospace",
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "#f2f2f2",
     padding: 10,
     borderRadius: 8,
   },
   section: { gap: 8 },
-  sectionLabel: { fontSize: 15, fontWeight: "600", color: "#fff" },
-  sectionCode: { fontSize: 12, color: "#555", fontFamily: "monospace" },
+  sectionLabel: { fontSize: 15, fontWeight: "600", color: "#111" },
+  sectionCode: { fontSize: 12, color: "#888", fontFamily: "monospace" },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",

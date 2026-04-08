@@ -42,12 +42,12 @@ export default function MixBlendModeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 24, gap: 24 },
-  heading: { fontSize: 28, fontWeight: "700", color: "#fff" },
+  heading: { fontSize: 28, fontWeight: "700", color: "#111" },
   code: {
     fontSize: 13,
     color: "#fa709a",
     fontFamily: "monospace",
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "#f2f2f2",
     padding: 10,
     borderRadius: 8,
   },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   canvas: {
     height: 130,
-    backgroundColor: "#111",
+    backgroundColor: "#f0f0f0",
     borderRadius: 18,
     overflow: "hidden",
   },
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    color: "#aaa",
+    color: "#666",
     textAlign: "center",
     fontFamily: "monospace",
   },

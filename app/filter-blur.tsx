@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const blurLevels = [
   { blur: 0, label: "blur(0px)" },
@@ -13,18 +13,8 @@ function BlurCard({ blur, label }: { blur: number; label: string }) {
     <View style={styles.item}>
       <View
         style={[
-          {
-            width: 100,
-            height: 100,
-            backgroundColor: "red",
-            filter: "blur(8px",
-          },
-        ]}
-      ></View>
-      <View
-        style={[
           styles.box,
-          blur > 0 ? ({ filter: `blur(${blur}px)` } as any) : undefined,
+          blur > 0 ? { filter: `blur(${blur}px)` } : undefined,
         ]}
       >
         <View style={[styles.circle, styles.circleBlue]} />
@@ -42,11 +32,20 @@ export default function FilterBlurScreen() {
       <Stack.Screen options={{ title: "Filter: Blur" }} />
       <Text style={styles.heading}>Filter: Blur</Text>
       <Text style={styles.code}>{"filter: 'blur(8px)'"}</Text>
-      <View style={styles.grid}>
-        {blurLevels.map((item) => (
-          <BlurCard key={item.label} blur={item.blur} label={item.label} />
-        ))}
-      </View>
+      {Platform.OS === "ios" ? (
+        <View style={styles.notice}>
+          <Text style={styles.noticeText}>
+            blur is not supported on iOS. Only brightness and opacity filters
+            are available on iOS.
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.grid}>
+          {blurLevels.map((item) => (
+            <BlurCard key={item.label} blur={item.blur} label={item.label} />
+          ))}
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -54,12 +53,12 @@ export default function FilterBlurScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 24, gap: 24 },
-  heading: { fontSize: 28, fontWeight: "700" },
+  heading: { fontSize: 28, fontWeight: "700", color: "#111" },
   code: {
     fontSize: 13,
-    color: "#f093fb",
+    color: "#9b59b6",
     fontFamily: "monospace",
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "#f2f2f2",
     padding: 10,
     borderRadius: 8,
   },
@@ -74,7 +73,6 @@ const styles = StyleSheet.create({
   },
   box: {
     height: 140,
-    backgroundColor: "#111",
     borderRadius: 18,
     overflow: "hidden",
   },
@@ -102,6 +100,16 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     textAlign: "center",
+    fontFamily: "monospace",
+  },
+  notice: {
+    backgroundColor: "#f2f2f2",
+    borderRadius: 8,
+    padding: 16,
+  },
+  noticeText: {
+    color: "#9b59b6",
+    fontSize: 14,
     fontFamily: "monospace",
   },
 });
