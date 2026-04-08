@@ -1,4 +1,3 @@
-import { Stack } from "expo-router";
 import {
   Image,
   Platform,
@@ -11,40 +10,34 @@ import {
 const IMAGE_URI =
   "https://d3ynb031qx3d1.cloudfront.net/platano/before-after/avif/avatar-3d-before.avif";
 
-const blurLevels = [
-  { blur: 0, label: "blur(0px)" },
-  { blur: 3, label: "blur(3px)" },
-  { blur: 8, label: "blur(8px)" },
-  { blur: 16, label: "blur(16px)" },
-];
+function SectionHeader({
+  title,
+  code,
+  platforms,
+}: {
+  title: string;
+  code: string;
+  platforms: "iOS · Android" | "iOS" | "Android";
+}) {
+  const badgeStyle =
+    platforms === "iOS · Android"
+      ? styles.badgeBoth
+      : platforms === "iOS"
+        ? styles.badgeIos
+        : styles.badgeAndroid;
 
-const brightnessLevels = [
-  { value: 0.25, label: "brightness(0.25)" },
-  { value: 0.5, label: "brightness(0.5)" },
-  { value: 1, label: "brightness(1)" },
-  { value: 1.75, label: "brightness(1.75)" },
-];
-
-const opacityLevels = [
-  { value: 1, label: "opacity(1)" },
-  { value: 0.75, label: "opacity(0.75)" },
-  { value: 0.4, label: "opacity(0.4)" },
-  { value: 0.1, label: "opacity(0.1)" },
-];
-
-const saturateLevels = [
-  { value: 0, label: "saturate(0)" },
-  { value: 0.5, label: "saturate(0.5)" },
-  { value: 1, label: "saturate(1)" },
-  { value: 3, label: "saturate(3)" },
-];
-
-const invertLevels = [
-  { value: 0, label: "invert(0)" },
-  { value: 0.25, label: "invert(0.25)" },
-  { value: 0.75, label: "invert(0.75)" },
-  { value: 1, label: "invert(1)" },
-];
+  return (
+    <>
+      <View style={styles.headingRow}>
+        <Text style={styles.heading}>{title}</Text>
+        <View style={[styles.badge, badgeStyle]}>
+          <Text style={styles.badgeText}>{platforms}</Text>
+        </View>
+      </View>
+      <Text style={styles.code}>{code}</Text>
+    </>
+  );
+}
 
 function BlurCard({ blur, label }: { blur: number; label: string }) {
   return (
@@ -64,12 +57,21 @@ function BlurCard({ blur, label }: { blur: number; label: string }) {
   );
 }
 
-function ImageFilterCard({ filter, label }: { filter: object; label: string }) {
+function ImageFilterCard({
+  filter,
+  label,
+}: {
+  filter: object | null;
+  label: string;
+}) {
   return (
     <View style={styles.item}>
       <Image
         source={{ uri: IMAGE_URI }}
-        style={[styles.imageBox, { filter: [filter] } as any]}
+        style={[
+          styles.imageBox,
+          filter ? ({ filter: [filter] } as any) : undefined,
+        ]}
       />
       <Text style={styles.label}>{label}</Text>
     </View>
@@ -79,66 +81,74 @@ function ImageFilterCard({ filter, label }: { filter: object; label: string }) {
 export default function FilterBlurScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Stack.Screen options={{ title: "Filter: Blur" }} />
-
-      {Platform.OS === "ios" ? (
+      {Platform.OS === "android" && (
         <>
-          <Text style={styles.heading}>brightness</Text>
-          <Text style={styles.code}>{"filter: [{brightness: 1.75}]"}</Text>
+          <SectionHeader
+            title="blur"
+            code={"filter: 'blur(8px)'"}
+            platforms="Android"
+          />
           <View style={styles.grid}>
-            {brightnessLevels.map((item) => (
-              <ImageFilterCard
-                key={item.label}
-                filter={{ brightness: item.value }}
-                label={item.label}
-              />
-            ))}
+            <BlurCard blur={0} label="blur(0px)" />
+            <BlurCard blur={8} label="blur(8px)" />
           </View>
 
-          <Text style={styles.heading}>opacity</Text>
-          <Text style={styles.code}>{"filter: [{opacity: 0.4}]"}</Text>
+          <SectionHeader
+            title="invert"
+            code={"filter: [{invert: 1}]"}
+            platforms="Android"
+          />
           <View style={styles.grid}>
-            {opacityLevels.map((item) => (
-              <ImageFilterCard
-                key={item.label}
-                filter={{ opacity: item.value }}
-                label={item.label}
-              />
-            ))}
+            <ImageFilterCard filter={null} label="original" />
+            <ImageFilterCard filter={{ invert: 1 }} label="invert(1)" />
           </View>
         </>
-      ) : (
+      )}
+
+      {Platform.OS === "android" && <View style={{ marginTop: 16 }} />}
+      <SectionHeader
+        title="brightness"
+        code={"filter: [{brightness: 1.75}]"}
+        platforms="iOS · Android"
+      />
+      <View style={styles.grid}>
+        <ImageFilterCard filter={null} label="original" />
+        <ImageFilterCard
+          filter={{ brightness: 1.75 }}
+          label="brightness(1.75)"
+        />
+      </View>
+
+      <SectionHeader
+        title="opacity"
+        code={"filter: [{opacity: 0.4}]"}
+        platforms="iOS · Android"
+      />
+      <View style={styles.grid}>
+        <ImageFilterCard filter={null} label="original" />
+        <ImageFilterCard filter={{ opacity: 0.4 }} label="opacity(0.4)" />
+      </View>
+
+      <SectionHeader
+        title="saturate"
+        code={"filter: [{saturate: 0}]"}
+        platforms="Android"
+      />
+      <View style={styles.grid}>
+        <ImageFilterCard filter={null} label="original" />
+        <ImageFilterCard filter={{ saturate: 0 }} label="saturate(0)" />
+      </View>
+
+      {Platform.OS === "ios" && (
         <>
-          <Text style={styles.heading}>blur</Text>
-          <Text style={styles.code}>{"filter: 'blur(8px)'"}</Text>
+          <SectionHeader
+            title="invert"
+            code={"filter: [{invert: 1}]"}
+            platforms="Android"
+          />
           <View style={styles.grid}>
-            {blurLevels.map((item) => (
-              <BlurCard key={item.label} blur={item.blur} label={item.label} />
-            ))}
-          </View>
-
-          <Text style={styles.heading}>saturate</Text>
-          <Text style={styles.code}>{"filter: [{saturate: 3}]"}</Text>
-          <View style={styles.grid}>
-            {saturateLevels.map((item) => (
-              <ImageFilterCard
-                key={item.label}
-                filter={{ saturate: item.value }}
-                label={item.label}
-              />
-            ))}
-          </View>
-
-          <Text style={styles.heading}>invert</Text>
-          <Text style={styles.code}>{"filter: [{invert: 1}]"}</Text>
-          <View style={styles.grid}>
-            {invertLevels.map((item) => (
-              <ImageFilterCard
-                key={item.label}
-                filter={{ invert: item.value }}
-                label={item.label}
-              />
-            ))}
+            <ImageFilterCard filter={null} label="original" />
+            <ImageFilterCard filter={{ invert: 1 }} label="invert(1)" />
           </View>
         </>
       )}
@@ -148,8 +158,34 @@ export default function FilterBlurScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: 24, gap: 24 },
+  content: { padding: 24, gap: 32 },
+  headingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 10,
+  },
   heading: { fontSize: 28, fontWeight: "700", color: "#111" },
+  badge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  badgeBoth: {
+    backgroundColor: "#e8f5e9",
+  },
+  badgeIos: {
+    backgroundColor: "#e3f2fd",
+  },
+  badgeAndroid: {
+    backgroundColor: "#f3e8fd",
+  },
+  badgeText: {
+    fontSize: 11,
+    fontWeight: "600",
+    fontFamily: "monospace",
+    color: "#555",
+  },
   code: {
     fontSize: 13,
     color: "#9b59b6",
@@ -160,26 +196,26 @@ const styles = StyleSheet.create({
   },
   grid: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 16,
+    gap: 12,
   },
   item: {
-    width: "47%",
+    flex: 1,
     gap: 8,
   },
   box: {
-    height: 140,
+    height: 160,
     borderRadius: 18,
     overflow: "hidden",
   },
   imageBox: {
-    height: 140,
+    height: 200,
     borderRadius: 18,
+    resizeMode: "cover",
   },
   circle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     position: "absolute",
   },
   circleBlue: {
@@ -189,12 +225,12 @@ const styles = StyleSheet.create({
   },
   circlePink: {
     backgroundColor: "#f5576c",
-    top: 40,
-    left: 45,
+    top: 30,
+    left: 50,
   },
   circleYellow: {
     backgroundColor: "#f5c518",
-    top: 60,
+    top: 55,
     left: 5,
   },
   label: {
