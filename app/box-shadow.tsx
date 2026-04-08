@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { Stack } from "expo-router";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 const shadows = [
   {
@@ -19,8 +19,7 @@ const shadows = [
   },
   {
     label: "Multi-layer",
-    shadow:
-      "0 2px 4px rgba(0, 0, 0, 0.4), 0 8px 32px rgba(67, 233, 123, 0.5)",
+    shadow: "0 2px 4px rgba(0, 0, 0, 0.4), 0 8px 32px rgba(67, 233, 123, 0.5)",
     accent: "#43e97b",
   },
 ];

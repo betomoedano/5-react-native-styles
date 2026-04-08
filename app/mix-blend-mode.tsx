@@ -1,13 +1,26 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { Stack } from "expo-router";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+
+const IMAGE_URI =
+  "https://d3ynb031qx3d1.cloudfront.net/platano/before-after/avif/avatar-3d-before.avif";
 
 const blendModes = [
   "normal",
   "multiply",
   "screen",
   "overlay",
+  "darken",
+  "lighten",
+  "color-dodge",
+  "color-burn",
+  "hard-light",
+  "soft-light",
   "difference",
   "exclusion",
+  "hue",
+  "saturation",
+  "color",
+  "luminosity",
 ] as const;
 
 type BlendMode = (typeof blendModes)[number];
@@ -16,8 +29,10 @@ function BlendCard({ mode }: { mode: BlendMode }) {
   return (
     <View style={styles.item}>
       <View style={styles.canvas}>
-        <View style={styles.circleBlue} />
-        <View style={[styles.circlePink, { mixBlendMode: mode }]} />
+        <Image source={{ uri: IMAGE_URI }} style={styles.image} />
+        {mode !== "normal" && (
+          <View style={[styles.overlay, { mixBlendMode: mode } as any]} />
+        )}
       </View>
       <Text style={styles.label}>{mode}</Text>
     </View>
@@ -28,8 +43,10 @@ export default function MixBlendModeScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Stack.Screen options={{ title: "Mix Blend Mode" }} />
-      <Text style={styles.heading}>Mix Blend Mode</Text>
-      <Text style={styles.code}>{"mixBlendMode: 'multiply' | 'screen' | ..."}</Text>
+      <Text style={styles.heading}>mixBlendMode</Text>
+      <Text style={styles.code}>
+        {"mixBlendMode: 'multiply' | 'screen' | ..."}
+      </Text>
       <View style={styles.grid}>
         {blendModes.map((mode) => (
           <BlendCard key={mode} mode={mode} />
@@ -45,7 +62,7 @@ const styles = StyleSheet.create({
   heading: { fontSize: 28, fontWeight: "700", color: "#111" },
   code: {
     fontSize: 13,
-    color: "#fa709a",
+    color: "purple",
     fontFamily: "monospace",
     backgroundColor: "#f2f2f2",
     padding: 10,
@@ -61,28 +78,17 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   canvas: {
-    height: 130,
-    backgroundColor: "#f0f0f0",
+    height: 160,
     borderRadius: 18,
     overflow: "hidden",
   },
-  circleBlue: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#4facfe",
-    position: "absolute",
-    top: 25,
-    left: 15,
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: "cover",
   },
-  circlePink: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#f5576c",
-    position: "absolute",
-    top: 25,
-    left: 50,
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "orange",
   },
   label: {
     fontSize: 13,

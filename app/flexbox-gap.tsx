@@ -1,7 +1,13 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
-import { Stack } from "expo-router";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-const colors = ["#667eea", "#f093fb", "#4facfe", "#43e97b", "#fa709a", "#f5c518"];
+const colors = [
+  "#667eea",
+  "#f093fb",
+  "#4facfe",
+  "#43e97b",
+  "#fa709a",
+  "#f5c518",
+];
 
 function Section({
   label,
@@ -32,8 +38,6 @@ function Section({
 export default function FlexboxGapScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Stack.Screen options={{ title: "Flexbox Gap" }} />
-      <Text style={styles.heading}>Flexbox Gap</Text>
       <Text style={styles.code}>{"gap / rowGap / columnGap"}</Text>
       <Section label="No gap" code="gap: 0" gap={0} />
       <Section label="Uniform gap" code="gap: 12" gap={12} />
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
   heading: { fontSize: 28, fontWeight: "700", color: "#111" },
   code: {
     fontSize: 13,
-    color: "#43e97b",
+    color: "purple",
     fontFamily: "monospace",
     backgroundColor: "#f2f2f2",
     padding: 10,
